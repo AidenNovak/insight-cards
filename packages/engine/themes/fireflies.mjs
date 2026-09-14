@@ -29,10 +29,28 @@ export function render(ctx, { w, h, rng, palette }) {
   // 每个小群落照亮附近雾滴。独立的竖向遮挡给出林间深度。
   const mist = offscreen(w / 3, h / 3);
   const img = mist.ctx.createImageData(mist.canvas.width, mist.canvas.height);
+  /**
+   * 每个群落的脉冲 —— **雾层必须跟着它走**。
+   *
+   * 先试的是只让光点（核心 + 近晕）脉动：实测三个群落的平均亮度差只从 5.27
+   * 动到 5.53（200px），肉眼分辨不出 —— 光点又小又稀，一个群落里几十个点的
+   * 亮度变化摊到整片像素上就没了。静帧里占面积的是雾，所以读得出"同步"的那一层
+   * 也只能是雾：**这一片亮起来、那一片正在暗下去**，也就是 meta 里那句
+   * "整片夜色开始呼吸"。
+   *
+   * 相位公式与光点的 `sync` 同一套（同一群落共享、彼此依次延后）；
+   * 幅度是两头卡出来的：0.72–1.47 那档缩略图里立得住（群落亮度差 5.3 → 13.3），
+   * 但全尺寸下雾团太大太亮，往"星云/烟团"跑，丢掉了配色要的克制；
+   * 0.86–1.24 又看不出群落差异（5.3 → 5.4）。0.80–1.35 是中间那档。
+   */
+  const swarmPhase = (s) => s[0] * 3.1 + s[1] * 2.3;
+  const swarmPulse = (s) => 0.80 + 0.55 * (0.62 + 0.38 * Math.cos(TAU * 1.4 + swarmPhase(s) * 1.9));
   for (let y = 0; y < mist.canvas.height; y++) for (let x = 0; x < mist.canvas.width; x++) {
     const u = x / mist.canvas.width, v = y / mist.canvas.height;
     let light = 0;
-    for (const [sx, sy] of swarms) light += Math.exp(-1 * ((u - sx) / 0.19) ** 2 - ((v - sy) / 0.16) ** 2);
+    for (const s of swarms) {
+      light += Math.exp(-1 * ((u - s[0]) / 0.19) ** 2 - ((v - s[1]) / 0.16) ** 2) * swarmPulse(s);
+    }
     const n = rng.warp(u * 5, v * 6, 2.2, 4);
     const obstruction = smoothstep((rng.fbm(u * 14 + 5, v * 0.8, 3) - 0.36) / 0.28);
     // 雾层亮度。原值 (0.09 + n*0.25) 在全尺寸下够用，但缩到 200px 后
@@ -75,6 +93,19 @@ export function render(ctx, { w, h, rng, palette }) {
     // 长曝光中亮度有共同脉冲，飞行方向却各自不同。
     const angle = -0.9 + Math.sin(f.phase) * 0.8;
     const length = f.trail * (0.3 + focus * 0.9);
+    /**
+     * 头部脉冲（拖尾 t=1 处）—— 光点这一层也跟着相位走。
+     *
+     * 拖尾本身细而淡，缩到 200px 会被降采样抹掉；原来只剩恒定亮度的实心核，
+     * 于是"同步"在小尺寸下根本不存在，静帧看过去只是"一堆亮度随机的冷色微粒"。
+     * 让核心和近晕共用这个脉冲，光点才不会各闪各的。
+     *
+     * **但它不是让"同步"可见的那一层**：实测三个群落的平均亮度差只从 5.27
+     * 动到 5.53（200px），看不出来 —— 光点又小又稀。真正扛这件事的是雾层，
+     * 见下面 `swarmPulse` 的说明。
+     * 幅度压在一档以内（0.86–1.24）：再大就成了各闪各的，同步反而读不出来。
+     */
+    const syncPulse = 0.74 + 0.5 * (0.62 + 0.38 * Math.cos(TAU * 1.4 + f.sync * 1.9));
     const pts = [];
     for (let k = 0; k <= 18; k++) {
       const t = k / 18, bend = Math.sin(t * Math.PI) * length * 0.17;
@@ -97,8 +128,8 @@ export function render(ctx, { w, h, rng, palette }) {
     // 真实的萤火照片里最亮点确实会溢出，但**溢出区应当仍带着色温**。
     // 做法：降低外层 alpha，并把实心点从"纯 glow 色"改为"glow 色略偏向白"，
     // 让它在叠加上限之下就已经够亮，而不是靠顶到 255 才够亮。
-    glow(ctx, f.x, f.y, r * (3.5 + (1 - focus) * 3), palette.accent, brightness * 0.20);
-    glow(ctx, f.x, f.y, r * 1.5, col, brightness * 0.34);
+    glow(ctx, f.x, f.y, r * (3.5 + (1 - focus) * 3), palette.accent, brightness * 0.20 * syncPulse);
+    glow(ctx, f.x, f.y, r * 1.5, col, brightness * 0.34 * syncPulse);
     if (focus > 0.38) {
       const core = mix(col, [255, 255, 255], 0.34);
       /**
@@ -116,7 +147,7 @@ export function render(ctx, { w, h, rng, palette }) {
        * （再加锐点会让光点变硬，像 pin 点或噪点，反而失去萤火的柔）。
        */
       const cr = Math.max(r * 0.64, 3.4 * unit);
-      ctx.fillStyle = rgb(core, Math.min(0.95, brightness * focus * 0.72 + 0.16));
+      ctx.fillStyle = rgb(core, Math.min(0.95, (brightness * focus * 0.72 + 0.16) * syncPulse));
       ctx.beginPath(); ctx.ellipse(f.x, f.y, cr, cr * 0.68, angle, 0, TAU); ctx.fill();
     }
   }
