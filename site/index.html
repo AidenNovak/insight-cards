@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>insight-cards — 用代码算出画面，用排版排出判断</title>
+<meta name="description" content="把一条判断渲染成一张卡片：上面是算出来的画面，下面是排出来的字。整条链路没有生图模型。18 个主题，每一个演示「连接」的一种机制。">
+<meta property="og:title" content="insight-cards — 用代码算出画面，用排版排出判断">
+<meta property="og:description" content="整条链路没有生图模型。18 个主题，每一个演示「连接」的一种机制。">
+<meta property="og:image" content="assets/og.png">
+<meta property="og:type" content="website">
+<link rel="icon" href="favicon.png" type="image/png">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="site-header">
+  <a class="wordmark" href="#top">insight&#8209;cards</a>
+  <nav>
+    <a href="#why">为什么</a>
+    <a href="#anatomy">一张卡</a>
+    <a href="#mechanism">怎么选主题</a>
+    <a href="#gallery">画廊</a>
+    <a href="#start">怎么用</a>
+  </nav>
+</header>
+
+<main id="top">
+
+  <!-- ── hero ─────────────────────────────────────────────── -->
+  <section class="hero">
+    <div class="hero-copy">
+      <p class="eyebrow">代码渲染 · 无生图模型</p>
+      <h1>用代码算出画面，<br>用排版排出判断。</h1>
+      <p class="lede">
+        一张卡分两半：上面是算出来的画，下面是一句判断。
+        前提是——<strong>图和字必须是同一件事说两遍</strong>。
+      </p>
+      <p class="actions">
+        <a class="btn" href="#gallery">看画廊</a>
+        <a class="btn ghost" href="#start">怎么用</a>
+      </p>
+    </div>
+    <figure class="hero-card">
+      <img src="assets/cards/fireflies.jpg" width="720" height="960"
+           alt="一张卡片：深色画面里一群萤火在雾中同步明灭，下方是判断句「同步不是有人指挥，是每个都在看邻座」。">
+      <figcaption>萤火 · 连接来自同步 · 生物光</figcaption>
+    </figure>
+  </section>
+
+  <!-- ── why ──────────────────────────────────────────────── -->
+  <section id="why" class="band">
+    <h2>为什么不用生图模型</h2>
+    <p class="section-lede">
+      这不是将就，是整套东西的前提。
+    </p>
+    <ol class="reasons">
+      <li>
+        <h3>画面是程序，不是事实</h3>
+        <p>改一个参数就能看它怎么变。生出来的图是一个既定事实，改不动。</p>
+      </li>
+      <li>
+        <h3>判断句必须精确到字</h3>
+        <p>交给图像模型，它会写错别字、会加装饰、会被光泽带走。</p>
+      </li>
+      <li>
+        <h3>同一句话要能反复出片</h3>
+        <p>换十几套配色、十几个意象，而版式一丝不变——这才是模板。</p>
+      </li>
+    </ol>
+
+    <div class="callout">
+      <p class="callout-title">判断标准只有一个</p>
+      <p>
+        读完字再看图，图会<strong>多出一层意思</strong>。
+        如果一张星空换成一张海浪而这句话照样成立，那星空就是多余的——
+        那是装饰，不是表达。
+      </p>
+    </div>
+  </section>
+
+  <!-- ── anatomy ──────────────────────────────────────────── -->
+  <section id="anatomy" class="band alt">
+    <h2>一张卡上有什么</h2>
+    <div class="anatomy">
+      <figure>
+        <img src="assets/cards/strata.jpg" width="720" height="960"
+             alt="一张卡片：沉积岩层一样的分层画面，下方是判断句「每一层都薄得不像话，但它们摞成了时间」。">
+      </figure>
+      <dl class="fields">
+        <div>
+          <dt>画面</dt>
+          <dd><code>--theme</code> 决定<strong>谁在动、怎么动</strong>。它是这句话的机制，不是背景。</dd>
+        </div>
+        <div>
+          <dt>页眉</dt>
+          <dd>序号 <code>--index / --total</code>，以及机制名 <code>--kicker</code>（默认空，要自己传）。</dd>
+        </div>
+        <div>
+          <dt>标题</dt>
+          <dd><code>--title</code>：一句判断。整套东西围绕它，不围绕图。</dd>
+        </div>
+        <div>
+          <dt>正文</dt>
+          <dd><code>--summary</code>：这句话凭什么成立。写的是理由，不是抒情。</dd>
+        </div>
+        <div>
+          <dt>页脚</dt>
+          <dd>配色名与它的情绪词（<code>--footer</code> 可覆盖）。配色决定<strong>温度</strong>，不决定形状。</dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ── mechanism ────────────────────────────────────────── -->
+  <section id="mechanism" class="band">
+    <h2>怎么选主题：不要问「好不好看」，要问「怎么发生的」</h2>
+    <p class="section-lede">
+      最容易犯的错是按<em>题材</em>匹配——讲星星的文案配星野，讲水的配潮汐。那是表面的。
+      每个主题的 <code>connects</code> 记的不是"它画的是什么"，而是<strong>它演示了连接的哪一种机制</strong>。
+    </p>
+
+    <div class="pair-examples">
+      <div class="pair">
+        <p class="quote">我一直没注意到的那条线</p>
+        <p class="arrow">机制是<strong>注视</strong></p>
+        <p class="theme">星野</p>
+      </div>
+      <div class="pair">
+        <p class="quote">量变到某个点突然通了</p>
+        <p class="arrow">机制是<strong>击穿</strong></p>
+        <p class="theme">放电</p>
+      </div>
+      <div class="pair">
+        <p class="quote">成分没变，变的是它们的排列</p>
+        <p class="arrow">机制是<strong>结晶</strong></p>
+        <p class="theme">晶格</p>
+      </div>
+    </div>
+
+    <details class="mech-table">
+      <summary>全部十八种机制（写新主题时，机制必须与它们都不同）</summary>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>机制</th><th>主题</th><th>机制</th><th>主题</th></tr></thead>
+          <tbody>
+            <tr><td>约束</td><td>光纤 <span>fiber</span></td><td>磁场</td><td>极光 <span>aurora</span></td></tr>
+            <tr><td>共振</td><td>共鸣 <span>resonance</span></td><td>折射</td><td>棱镜 <span>prism</span></td></tr>
+            <tr><td>共生</td><td>双星 <span>orbit</span></td><td>扩散</td><td>水中墨 <span>ink</span></td></tr>
+            <tr><td>延迟</td><td>回响 <span>echo</span></td><td>堆积</td><td>沉积 <span>strata</span></td></tr>
+            <tr><td>击穿</td><td>放电 <span>discharge</span></td><td>周期</td><td>潮汐 <span>tide</span></td></tr>
+            <tr><td>引力</td><td>星云 <span>nebula</span></td><td>累积</td><td>潮痕 <span>tideline</span></td></tr>
+            <tr><td>轴心</td><td>星轨 <span>startrails</span></td><td>激发</td><td>突触 <span>synapse</span></td></tr>
+            <tr><td>注视</td><td>星野 <span>starfield</span></td><td>交换</td><td>菌丝 <span>mycelium</span></td></tr>
+            <tr><td>结晶</td><td>晶格 <span>lattice</span></td><td>同步</td><td>萤火 <span>fireflies</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note">
+        配色的选法同理，但选的是<strong>温度</strong>：同一句判断放在「深空」里是冷静观察，
+        放在「余烬」里是警告，放在「琥珀」里是隔着一层时间的怀旧。
+      </p>
+    </details>
+  </section>
+
+  <!-- ── gallery ──────────────────────────────────────────── -->
+  <section id="gallery" class="band alt">
+    <h2>画廊</h2>
+    <p class="section-lede">
+      同一套版式，十八个机制、十八组配色各自组合。下面是十二张，每张下方的文字是它的机制与配色。
+    </p>
+    <div class="gallery" id="gallery-grid"><!-- 由 cards.json 填充 --></div>
+    <p class="note">
+      完整成品见仓库里的四套 deck：<code>nexus</code> / <code>nexus-mono</code> /
+      <code>undertow</code> / <code>structure</code>，每套 8–10 张，是能直接翻的成品，
+      不需要自己跑一遍。
+    </p>
+  </section>
+
+  <!-- ── numbers ──────────────────────────────────────────── -->
+  <section class="band numbers">
+    <dl>
+      <div><dt>18</dt><dd>主题 · 每个一种机制</dd></div>
+      <div><dt>18</dt><dd>配色 · 每组一种温度</dd></div>
+      <div><dt>4</dt><dd>排好的 deck</dd></div>
+      <div><dt>11</dt><dd>命令行工具</dd></div>
+      <div><dt>0</dt><dd>生图模型</dd></div>
+    </dl>
+  </section>
+
+  <!-- ── start ────────────────────────────────────────────── -->
+  <section id="start" class="band">
+    <h2>怎么用</h2>
+    <p class="section-lede">
+      它是给 agent 用的 skill：拷进技能目录，agent 就能按文档自己选主题、自己出片。
+    </p>
+
+    <div class="steps">
+      <div class="step">
+        <h3>1 · 装成 skill</h3>
+        <pre><code>Tools/install-skill.sh
+# 装到 ~/.dimcode/v2/skills/insight-cards</code></pre>
+        <p>装完 agent 读 <code>SKILL.md</code> 就能用；<code>--check</code> 只检查不写入。</p>
+      </div>
+      <div class="step">
+        <h3>2 · 出一张</h3>
+        <pre><code>node bin/make-card.mjs \
+  --theme starfield --palette deep-field \
+  --title "你不是在收集碎片，你在连一个只有你能看见的形状" \
+  --summary "几百条记录躺在那里的时候什么都不是……" \
+  --out out/card.png</code></pre>
+        <p>1080×1440 @2x，单张渲染 1–3 秒。</p>
+      </div>
+      <div class="step">
+        <h3>3 · 出一套 / 翻一翻</h3>
+        <pre><code>node bin/make-deck.mjs --preset nexus --out out/nexus
+node bin/gallery.mjs          # 一个页面看全部成品
+node Tools/thumb-sheet.mjs starfield orbit echo</code></pre>
+        <p>最后那条把卡片真的缩到 <strong>200px</strong> 并排——信息流里它就是那么大。</p>
+      </div>
+    </div>
+
+    <div class="callout">
+      <p class="callout-title">适合什么，不适合什么</p>
+      <p>
+        <strong>适合</strong>：判断卡 / 金句卡 / 分享图 / 复盘，一次出一整套统一风格的 deck。
+        <strong>不适合</strong>：要真实照片的写实效果（那该用生图）；要可编辑的矢量文件（这里输出 PNG）。
+      </p>
+    </div>
+  </section>
+
+  <!-- ── evidence ─────────────────────────────────────────── -->
+  <section class="band alt">
+    <h2>它被怎么验过</h2>
+    <p class="section-lede">
+      这套东西不靠"看着挺好"，每一轮验收都留下了能复现的读数与失败记录。
+    </p>
+    <ul class="evidence">
+      <li>
+        <h3>冷启动试用</h3>
+        <p>把六条未整理的原始笔记和这份文档交给一个<strong>完全没有上下文</strong>的 agent，
+          看它能不能学会"按机制配对"。它没有按题材表面相似去选，暴露出的七处问题都已修。</p>
+      </li>
+      <li>
+        <h3>四轮核验，每条都记了反例</h3>
+        <p>第三轮发现自检清单里"缩到 200px 仍认得出主体"这条<strong>从写下那天起就没被执行过</strong>——
+          真的走一遍，18 个主题里有 3 个塌掉（`orbit` 只剩两个点、`echo` 只剩一团光斑、`fireflies` 只剩一堆散点），
+          根因都是按画布比例缩放的尺寸在小尺寸下归零。</p>
+      </li>
+      <li>
+        <h3>判据先证明它会失败，再相信它会通过</h3>
+        <p>同轮里发现上一轮加的"局部写死颜色"判据是<strong>假的</strong>：把主体写死成纯红它仍然全绿。
+          换成量亮部整体色相后才成立（正常主题移动 151°–167°，写死掉到 8.6°）。</p>
+      </li>
+      <li>
+        <h3>第四轮：一条主题真的过线了</h3>
+        <p><code>fireflies</code> 的主题词是"同步"，可静帧在 200px 下只读成"一堆冷色微粒"。
+          先把光点脉动试了三档（群落亮度差 5.27 → 5.53，<strong>没用</strong>），
+          最后是让<strong>雾层按群落相位呼吸</strong>：5.27 → 10.89，缩略图里读成"雾中萤火"，
+          而全尺寸没有变差。</p>
+      </li>
+    </ul>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <p class="foot-mark">insight-cards</p>
+  <p>图归算法，字归排版。整条链路没有生图模型。</p>
+  <p class="fine">18 主题 · 18 配色 · 4 套 deck · 11 个工具</p>
+</footer>
+
+<script>
+  // 画廊由 site/cards.json 填充：图与清单同源，改一处不会漂。
+  // `?eager=1` 让画廊图立刻加载——给截图验收用的（截全页时懒加载不一定会触发）。
+  const eager = new URLSearchParams(location.search).has("eager");
+  fetch("cards.json").then((r) => r.json()).then((cards) => {
+    const grid = document.getElementById("gallery-grid");
+    grid.innerHTML = cards.map((c) => `
+      <figure>
+        <img src="assets/cards/${c.slug}.jpg" width="720" height="960" ${eager ? "" : 'loading="lazy"'}
+             alt="${c.themeZh}（${c.theme}）：连接来自${c.connects}。${c.title}">
+        <figcaption>
+          <strong>${c.themeZh}</strong> <span class="mono">${c.theme}</span>
+          <span class="sep">·</span> ${c.connects}
+          <span class="sep">·</span> ${c.paletteZh}
+        </figcaption>
+      </figure>`).join("");
+  });
+</script>
+</body>
+</html>

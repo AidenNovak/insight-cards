@@ -1,0 +1,226 @@
+/* insight-cards 落地页
+ *
+ * 页面的调子跟着卡片走：近黑的底、克制的描边、一点点冷绿。
+ * 不用框架、不用外部字体：一个静态目录直接能开（file:// 也能看，
+ * 只有画廊那部分是 fetch，起个静态服务器即可）。
+ */
+
+:root {
+  --bg: #0b0c0f;
+  --bg-alt: #0f1115;
+  --line: #22252c;
+  --ink: #f2f1ed;
+  --ink-soft: #9aa2ae;
+  --ink-dim: #6b7280;
+  --accent: #8fd3b6;
+  --accent-dim: #4e7f6b;
+  --card: #14161b;
+  --radius: 14px;
+  --measure: 68ch;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: "Noto Sans SC", "PingFang SC", "Hiragino Sans GB", system-ui, -apple-system,
+    "Segoe UI", sans-serif;
+  font-size: 17px;
+  line-height: 1.75;
+  -webkit-font-smoothing: antialiased;
+}
+
+code, .mono, pre {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.92em;
+}
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ── header ─────────────────────────────────────────────── */
+.site-header {
+  position: sticky; top: 0; z-index: 10;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 24px; padding: 16px clamp(20px, 5vw, 64px);
+  background: rgba(11, 12, 15, 0.86);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+}
+.wordmark { color: var(--ink); font-weight: 600; letter-spacing: 0.02em; }
+.site-header nav { display: flex; gap: clamp(12px, 2vw, 28px); flex-wrap: wrap; }
+.site-header nav a { color: var(--ink-soft); font-size: 15px; }
+
+main { display: block; }
+
+/* ── hero ───────────────────────────────────────────────── */
+.hero {
+  display: grid; grid-template-columns: 1.15fr 0.85fr;
+  gap: clamp(28px, 5vw, 72px); align-items: center;
+  padding: clamp(48px, 8vw, 104px) clamp(20px, 5vw, 64px) clamp(40px, 6vw, 80px);
+  border-bottom: 1px solid var(--line);
+}
+.eyebrow {
+  margin: 0 0 18px; color: var(--accent); font-size: 14px; letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.hero h1 {
+  margin: 0 0 22px;
+  font-size: clamp(32px, 4.4vw, 56px); line-height: 1.22; letter-spacing: -0.01em;
+}
+.lede { margin: 0 0 32px; max-width: var(--measure); color: var(--ink-soft); font-size: 19px; }
+.lede strong { color: var(--ink); }
+.actions { display: flex; gap: 14px; flex-wrap: wrap; margin: 0; }
+.btn {
+  display: inline-block; padding: 12px 22px; border-radius: 999px;
+  background: var(--accent); color: #08120e; font-weight: 600; font-size: 16px;
+}
+.btn:hover { text-decoration: none; filter: brightness(1.06); }
+.btn.ghost { background: transparent; color: var(--ink); border: 1px solid var(--line); }
+
+.hero-card { margin: 0; }
+.hero-card img {
+  width: 100%; height: auto; border-radius: var(--radius); display: block;
+  border: 1px solid var(--line);
+}
+.hero-card figcaption {
+  margin-top: 12px; color: var(--ink-dim); font-size: 14px; text-align: center;
+}
+
+/* ── bands ──────────────────────────────────────────────── */
+.band {
+  padding: clamp(48px, 7vw, 88px) clamp(20px, 5vw, 64px);
+  border-bottom: 1px solid var(--line);
+}
+.band.alt { background: var(--bg-alt); }
+.band h2 {
+  margin: 0 0 20px; font-size: clamp(24px, 2.8vw, 34px); line-height: 1.35; letter-spacing: -0.01em;
+  max-width: 30ch;
+}
+.section-lede { margin: 0 0 36px; max-width: var(--measure); color: var(--ink-soft); }
+.section-lede em { color: var(--ink); font-style: normal; border-bottom: 1px dashed var(--accent-dim); }
+.note { max-width: var(--measure); color: var(--ink-dim); font-size: 15px; }
+
+/* ── reasons ────────────────────────────────────────────── */
+.reasons {
+  list-style: none; margin: 0 0 40px; padding: 0;
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 28px;
+}
+.reasons h3 { margin: 0 0 8px; font-size: 18px; }
+.reasons p { margin: 0; color: var(--ink-soft); font-size: 16px; }
+
+.callout {
+  border-left: 2px solid var(--accent-dim); padding: 4px 0 4px 22px;
+  max-width: var(--measure);
+}
+.callout-title { margin: 0 0 8px; color: var(--accent); font-weight: 600; }
+.callout p:last-child { margin: 0; color: var(--ink-soft); }
+.callout strong { color: var(--ink); }
+
+/* ── anatomy ────────────────────────────────────────────── */
+.anatomy {
+  display: grid; grid-template-columns: minmax(240px, 380px) 1fr;
+  gap: clamp(28px, 4vw, 64px); align-items: start;
+}
+.anatomy figure { margin: 0; }
+.anatomy img {
+  width: 100%; height: auto; border-radius: var(--radius); border: 1px solid var(--line); display: block;
+}
+.fields { margin: 0; }
+.fields > div { padding: 14px 0; border-bottom: 1px solid var(--line); }
+.fields > div:first-child { padding-top: 0; }
+.fields > div:last-child { border-bottom: 0; }
+.fields dt { color: var(--accent); font-size: 14px; letter-spacing: 0.08em; }
+.fields dd { margin: 4px 0 0; color: var(--ink-soft); }
+.fields dd strong { color: var(--ink); }
+
+/* ── mechanism ──────────────────────────────────────────── */
+.pair-examples {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 16px; margin: 0 0 32px;
+}
+.pair {
+  background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px 22px;
+}
+.pair .quote { margin: 0 0 12px; font-size: 16px; color: var(--ink); }
+.pair .arrow { margin: 0 0 10px; font-size: 14px; color: var(--ink-dim); }
+.pair .arrow strong { color: var(--accent); }
+.pair .theme { margin: 0; font-size: 20px; font-weight: 600; }
+
+.mech-table { border: 1px solid var(--line); border-radius: var(--radius); padding: 4px 22px 18px; }
+.mech-table summary {
+  cursor: pointer; padding: 16px 0; color: var(--accent); font-size: 15px;
+}
+.table-wrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 15px; }
+th, td { text-align: left; padding: 9px 14px 9px 0; border-bottom: 1px solid var(--line); }
+th { color: var(--ink-dim); font-weight: 500; font-size: 13px; letter-spacing: 0.06em; }
+td { color: var(--ink-soft); }
+td span { color: var(--ink-dim); font-size: 13px; }
+
+/* ── gallery ────────────────────────────────────────────── */
+.gallery {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 22px;
+}
+.gallery figure { margin: 0; }
+.gallery img {
+  width: 100%; height: auto; border-radius: 10px; border: 1px solid var(--line);
+  display: block; background: #0a0b0d;
+}
+.gallery figcaption { margin-top: 10px; font-size: 13px; color: var(--ink-dim); line-height: 1.6; }
+.gallery figcaption strong { color: var(--ink-soft); }
+.gallery .sep { opacity: 0.5; }
+.gallery + .note { margin-top: 28px; }
+
+/* ── numbers ────────────────────────────────────────────── */
+.numbers dl {
+  margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 24px;
+}
+.numbers dt { font-size: clamp(30px, 3.4vw, 44px); font-weight: 600; letter-spacing: -0.02em; }
+.numbers dd { margin: 4px 0 0; color: var(--ink-dim); font-size: 15px; }
+
+/* ── steps ──────────────────────────────────────────────── */
+.steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 26px; margin-bottom: 36px; }
+.step h3 { margin: 0 0 12px; font-size: 17px; }
+.step p { margin: 12px 0 0; color: var(--ink-dim); font-size: 15px; }
+pre {
+  margin: 0; padding: 16px 18px; background: var(--card); border: 1px solid var(--line);
+  border-radius: 10px; overflow-x: auto; color: #d8dee9; line-height: 1.6;
+}
+pre code { font-size: 13.5px; }
+
+/* ── evidence ───────────────────────────────────────────── */
+.evidence { list-style: none; margin: 0; padding: 0; display: grid; gap: 22px; max-width: 78ch; }
+.evidence li { border-left: 2px solid var(--line); padding-left: 20px; }
+.evidence h3 { margin: 0 0 6px; font-size: 17px; }
+.evidence p { margin: 0; color: var(--ink-soft); font-size: 16px; }
+.evidence strong { color: var(--ink); }
+
+/* ── footer ─────────────────────────────────────────────── */
+.site-footer {
+  padding: clamp(40px, 6vw, 72px) clamp(20px, 5vw, 64px);
+  color: var(--ink-dim); font-size: 15px;
+}
+.foot-mark { margin: 0 0 10px; color: var(--ink); font-weight: 600; letter-spacing: 0.02em; }
+.site-footer p { margin: 0 0 6px; }
+.fine { color: var(--ink-dim); font-size: 13px; }
+
+/* ── responsive ─────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .hero { grid-template-columns: 1fr; }
+  .hero-card { max-width: 420px; }
+  .anatomy { grid-template-columns: 1fr; }
+  .anatomy figure { max-width: 380px; }
+}
+@media (max-width: 560px) {
+  body { font-size: 16px; }
+  .site-header nav { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}

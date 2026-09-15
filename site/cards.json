@@ -1,0 +1,110 @@
+[
+  {
+    "slug": "starfield",
+    "theme": "starfield",
+    "themeZh": "星野",
+    "connects": "注视",
+    "palette": "deep-field",
+    "paletteZh": "深空",
+    "title": "你不是在收集碎片，你在连一个只有你能看见的形状"
+  },
+  {
+    "slug": "nebula",
+    "theme": "nebula",
+    "themeZh": "星云",
+    "connects": "引力",
+    "palette": "abyss",
+    "paletteZh": "深海",
+    "title": "散着的时候什么都不是，聚起来才有形状"
+  },
+  {
+    "slug": "strata",
+    "theme": "strata",
+    "themeZh": "沉积",
+    "connects": "堆积",
+    "palette": "bone",
+    "paletteZh": "骨",
+    "title": "每一层都薄得不像话，但它们摞成了时间"
+  },
+  {
+    "slug": "discharge",
+    "theme": "discharge",
+    "themeZh": "放电",
+    "connects": "击穿",
+    "palette": "core",
+    "paletteZh": "焰心",
+    "title": "突破不是积累的结果，是积累到某一点之后的击穿"
+  },
+  {
+    "slug": "echo",
+    "theme": "echo",
+    "themeZh": "回响",
+    "connects": "延迟",
+    "palette": "amber",
+    "paletteZh": "琥珀",
+    "title": "有些话要过很久才生效，而且是以衰减的方式回来"
+  },
+  {
+    "slug": "tideline",
+    "theme": "tideline",
+    "themeZh": "潮痕",
+    "connects": "累积",
+    "palette": "brass",
+    "paletteZh": "黄铜",
+    "title": "每次都很浅，是来了很多次才刻出这道沟"
+  },
+  {
+    "slug": "lattice",
+    "theme": "lattice",
+    "themeZh": "晶格",
+    "connects": "结晶",
+    "palette": "graphite",
+    "paletteZh": "石墨",
+    "title": "成分没变，变的是它们的排列"
+  },
+  {
+    "slug": "orbit",
+    "theme": "orbit",
+    "themeZh": "双星",
+    "connects": "共生",
+    "palette": "frost",
+    "paletteZh": "霜",
+    "title": "谁也没绕着谁，你们绕着彼此之间那个空的地方"
+  },
+  {
+    "slug": "fireflies",
+    "theme": "fireflies",
+    "themeZh": "萤火",
+    "connects": "同步",
+    "palette": "bio",
+    "paletteZh": "生物光",
+    "title": "同步不是有人指挥，是每个都在看邻座"
+  },
+  {
+    "slug": "mycelium",
+    "theme": "mycelium",
+    "themeZh": "菌丝",
+    "connects": "交换",
+    "palette": "moss",
+    "paletteZh": "苔藓",
+    "title": "看得见的是树，真正在交换的是地下的那张网"
+  },
+  {
+    "slug": "prism",
+    "theme": "prism",
+    "themeZh": "棱镜",
+    "connects": "折射",
+    "palette": "neon",
+    "paletteZh": "霓虹",
+    "title": "一直是那个东西，是某次转折才看出里面有什么"
+  },
+  {
+    "slug": "fiber",
+    "theme": "fiber",
+    "themeZh": "光纤",
+    "connects": "约束",
+    "palette": "wine",
+    "paletteZh": "夜酒",
+    "title": "约束不是妨碍，是让光拐弯的东西"
+  }
+]
