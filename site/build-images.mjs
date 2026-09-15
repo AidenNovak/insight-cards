@@ -119,14 +119,14 @@ const heroRender = await renderCard({
 const og = await browser.newPage({ viewport: { width: 1200, height: 630 }, deviceScaleFactor: 2 });
 await og.setContent(
   `<!doctype html><html><head><meta charset="utf-8"><style>
-    html,body{margin:0;height:100%;background:#0b0c0f;color:#f2f1ed;
+    html,body{margin:0;height:100%;background:#14161c;color:#f4f3f0;
       font-family:"Noto Sans SC","PingFang SC",system-ui,sans-serif}
     .wrap{display:flex;height:100%;align-items:center;gap:56px;padding:64px}
     .txt{flex:1}
     h1{margin:0 0 20px;font-size:52px;line-height:1.25;letter-spacing:-0.01em}
-    p{margin:0;font-size:22px;line-height:1.7;color:#9aa2ae}
-    .tag{display:inline-block;margin-bottom:28px;padding:6px 14px;border:1px solid #2a2d35;
-      border-radius:999px;font-size:18px;color:#8fd3b6}
+    p{margin:0;font-size:22px;line-height:1.7;color:#b6bdc8}
+    .tag{display:inline-block;margin-bottom:28px;padding:6px 14px;border:1px solid #2c313b;
+      border-radius:999px;font-size:18px;color:#93dcbc}
     img{width:352px;height:469px;border-radius:14px;display:block}
   </style></head><body><div class="wrap">
     <div class="txt"><span class="tag">insight-cards</span>
