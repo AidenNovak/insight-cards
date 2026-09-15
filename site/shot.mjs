@@ -38,7 +38,14 @@ for (const [name, width, height] of [["desktop", 1440, 900], ["mobile", 390, 844
   const page = await browser.newPage({ viewport: { width, height }, deviceScaleFactor: 1 });
   const url = `${URL_BASE}${URL_BASE.includes("?") ? "&" : "?"}eager=1`;
   await page.goto(url, { waitUntil: "load" });
-  await page.waitForTimeout(2000);
+  // 等画廊那 12 张图真的解码完再拍。第一次拍远程时只等 2 秒，结果报了
+  // "6 张未加载" —— 那是网络慢，不是页面坏；这种假警报比不报还费时间。
+  await page.waitForFunction(
+    () => [...document.images].every((i) => i.complete && i.naturalWidth > 0),
+    null,
+    { timeout: 20000 },
+  ).catch(() => {});
+  await page.waitForTimeout(600);
   const broken = await page.evaluate(() =>
     [...document.images].filter((i) => !i.complete || i.naturalWidth === 0).map((i) => i.getAttribute("src")));
   const out = join(OUT_DIR, `site-${name}.png`);
