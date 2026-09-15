@@ -3,9 +3,15 @@
  * 渲染器在主题抛异常时只会超时（__done 永不置位），看不到真正的原因。
  */
 import { readFileSync } from "node:fs";
-import { resolve } from "node:path";
+import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 
-const ROOT = "/Users/lijixiang/projects/insight-studio";
+/**
+ * 仓库根目录从**这个文件自己的位置**推出来，不写死绝对路径。
+ * 写死过一次，后果是：装到技能目录之后它只能在那一台机器上跑，
+ * 换台机器就 `ENOENT` —— 而故障排查那一节正好让人跑这个命令。
+ */
+const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const themeId = process.argv[2] ?? "strata";
 const palId = process.argv[3] ?? "brass";
 

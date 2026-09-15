@@ -1,7 +1,10 @@
 #!/bin/zsh
+# 冷启动试用当时的渲染脚本（留档）。路径按本文件位置推，不写死绝对路径 ——
+# 写死过一次，换台机器就找不到技能目录。
 set -e
-SK=/Users/lijixiang/.dimcode/v2/skills/insight-cards
-OUT=/Users/lijixiang/projects/insight-studio/out/notes-trial
+HERE=${0:A:h}
+SK=${SK:-$HERE/../..}
+OUT=${OUT:-$HERE/../../out/notes-trial}
 mkdir -p "$OUT"
 cd "$SK"
 

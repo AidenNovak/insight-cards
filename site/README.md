@@ -40,9 +40,32 @@ cd site && python3 -m http.server 8791 --bind 127.0.0.1
 
 ## 部署
 
-静态目录，直接扔给任意静态托管即可（Cloudflare Pages / 对象存储 / nginx）。
-没有构建步骤，`site/` 就是产物；部署时**排除** `build-images.mjs`、`shot.mjs`、
-`cards.json` 之外的源文件没必要删——多这几个文件不影响。
+已经上线：**https://skill.sg.aidenovak.com/**（vultr-sg 上的静态站）。
+
+```bash
+site/deploy.sh            # 同步 + 装 vhost + 签证书（如缺）+ reload + 验收
+site/deploy.sh --sync     # 只同步文件
+site/deploy.sh --check    # 只看现状（DNS / vhost / 证书 / 文件数）
+```
+
+`deploy.sh` 把 `site/` 里**页面要用的东西**同步到 `/var/www/skill.sg.aidenovak.com/`，
+排除 `*.mjs`、`README.md`、`nginx-*.conf`、`deploy.sh` 这些本地工具。
+
+### 这台主机的两条硬规矩（踩过）
+
+1. **站点监听 9443，不是 443。** 443 被宿主 nginx 的 `stream` 段占着做 SNI 分流
+   （`www.samsung.com` → Xray REALITY，`default` → `127.0.0.1:9443`）。vhost 写
+   `listen 127.0.0.1:9443 ssl http2`，80 段只做 ACME challenge 与跳转。
+2. **不要用 `certbot --nginx`，用 `certbot certonly --webroot`。**
+   第一次部署就是 `--nginx`：它的安装器往 vhost 里塞了 `listen 443 ssl`，和 stream
+   抢同一个端口；而且完整版 vhost 写死了还不存在的证书路径，`nginx -t` 直接失败，
+   形成"要证书才能测配置、要改配置才能签证书"的死结。现在的顺序是：
+   先上 HTTP-only 版 → `certbot certonly --webroot -w /var/www/html` → 再上完整版。
+   续期配置因此是 `authenticator = webroot`（`certbot renew --dry-run` 验过），
+   certbot 不会再改 nginx 配置。
+
+DNS 不在脚本里管：A 记录 `skill.sg.aidenovak.com → 45.76.152.44` 要在
+**签证书之前**就在 Cloudflare 上生效。
 
 ## 还没做的
 
