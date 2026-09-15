@@ -67,6 +67,15 @@ site/deploy.sh --check    # 只看现状（DNS / vhost / 证书 / 文件数）
 DNS 不在脚本里管：A 记录 `skill.sg.aidenovak.com → 45.76.152.44` 要在
 **签证书之前**就在 Cloudflare 上生效。
 
+## 核对线上与仓库是否一致
+
+```bash
+site/check-live.sh            # 默认查 https://skill.sg.aidenovak.com/
+```
+
+它把站点上每个文件抓回来比 sha256。**只看 HTTP 200 说明不了问题**：线上被谁改过、
+缓存没更新、或者漏传了一个文件，200 全都答不了。
+
 ## 还没做的
 
 - 英文版。现在是中文（主题名保留中英双语），要面向英文读者得再写一遍文案。
