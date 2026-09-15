@@ -2,6 +2,9 @@
 
 **用代码算出画面，用排版排出判断。整条链路没有生图模型。**
 
+> 落地页：<https://skill.sg.aidenovak.com/> ·
+> 装成 skill：`git clone https://github.com/AidenNovak/insight-cards && cd insight-cards && Tools/install-skill.sh`
+
 一张卡分两半：上面是算出来的画，下面是一句判断。这套东西的前提是——
 **图和字必须是同一件事说两遍。** 画面不是配图，是这句话的机制用另一套符号重述了一遍。
 
